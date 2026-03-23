@@ -1,0 +1,5 @@
+-- chefdep@test.com / 123456 / DEPARTMENT_MANAGER
+-- chefdiv@test.com / 123456 / DIVISION_MANAGER
+-- chefservice@test.com / 123456 / SERVICE_MANAGER
+-- employee1@test.com / 123456 / EMPLOYEE
+-- rh@test.com / 123456 / HR

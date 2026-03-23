@@ -7,6 +7,12 @@ import Departments from "../pages/Departments";
 import Divisions from "../pages/Divisions";
 import Services from "../pages/Services";
 import Employees from "../pages/Employees";
+import LeaveTypes from "../pages/LeaveTypes";
+import LeaveBalances from "../pages/LeaveBalances";
+import NewLeaveRequest from "../pages/NewLeaveRequest";
+import MyLeaveRequests from "../pages/MyLeaveRequests";
+import RequestsToValidate from "../pages/RequestsToValidate";
+import LeaveRequestDetails from "../pages/LeaveRequestDetails";
 
 function AppRouter() {
   return (
@@ -14,60 +20,29 @@ function AppRouter() {
       <Routes>
         <Route path="/" element={<Login />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Dashboard />
-              </MainLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/departments"
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Departments />
-              </MainLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/divisions"
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Divisions />
-              </MainLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/services"
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Services />
-              </MainLayout>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/employees"
-          element={
-            <ProtectedRoute>
-              <MainLayout>
-                <Employees />
-              </MainLayout>
-            </ProtectedRoute>
-          }
-        />
+        {[
+          { path: "/dashboard", element: <Dashboard /> },
+          { path: "/departments", element: <Departments /> },
+          { path: "/divisions", element: <Divisions /> },
+          { path: "/services", element: <Services /> },
+          { path: "/employees", element: <Employees /> },
+          { path: "/leave-types", element: <LeaveTypes /> },
+          { path: "/leave-balances", element: <LeaveBalances /> },
+          { path: "/new-leave-request", element: <NewLeaveRequest /> },
+          { path: "/my-leave-requests", element: <MyLeaveRequests /> },
+          { path: "/requests-to-validate", element: <RequestsToValidate /> },
+          { path: "/leave-request-details/:id", element: <LeaveRequestDetails /> },
+        ].map((route) => (
+          <Route
+            key={route.path}
+            path={route.path}
+            element={
+              <ProtectedRoute>
+                <MainLayout>{route.element}</MainLayout>
+              </ProtectedRoute>
+            }
+          />
+        ))}
       </Routes>
     </BrowserRouter>
   );
