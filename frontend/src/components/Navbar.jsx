@@ -1,9 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { LogOut, User } from "lucide-react";
+import logo from "../assets/logo1png.png";
 
 function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+
+  if (!user) return null;
 
   const handleLogout = () => {
     logout();
@@ -11,54 +15,48 @@ function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-zinc-950/80 backdrop-blur-2xl border-b border-zinc-800/50 shadow-xl">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-        <div className="flex justify-between items-center h-16 gap-4 sm:gap-6">
-          <div className="flex-shrink-0 flex items-center">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-stone-100 to-stone-400 bg-clip-text text-transparent">Gestion Congés</h2>
+    <header className="fixed top-0 left-0 right-0 z-50 glass-nav h-16 flex items-center px-6">
+      <div className="flex items-center justify-between w-full">
+        <Link to="/dashboard" className="flex items-center group">
+          <div className="relative">
+            <div className="absolute -inset-1 bg-amber-500/20 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
+            <img 
+              src={logo} 
+              alt="Logo" 
+              className="relative h-10 w-auto object-contain drop-shadow-md brightness-110"
+            />
+          </div>
+          <div className="h-6 w-[1px] bg-white/10 mx-4 hidden sm:block"></div>
+          <span className="text-lg font-bold tracking-tight text-white hidden sm:block">
+            Portal <span className="text-amber-400 font-medium">Congés</span>
+          </span>
+        </Link>
+
+        <div className="flex items-center gap-6">
+          <div className="hidden md:flex flex-col items-end">
+            <span className="text-sm font-medium text-white">{user.fullName}</span>
+            <span className="text-[10px] uppercase tracking-widest text-stone-400 font-bold">
+              {user.role?.replace("_", " ")}
+            </span>
           </div>
 
-          <div className="flex-1 overflow-x-auto hide-scrollbar py-2 sm:py-0">
-            <div className="flex items-center gap-1 sm:gap-1.5 px-2">
-              <Link to="/dashboard" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">Dashboard</Link>
-              <Link to="/departments" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">Departments</Link>
-              <Link to="/divisions" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">Divisions</Link>
-              <Link to="/services" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">Services</Link>
-              <Link to="/employees" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">Employees</Link>
-              <Link to="/leave-types" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">Leave Types</Link>
-              <Link to="/leave-balances" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">Balances</Link>
-              <Link to="/new-leave-request" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-amber-500 hover:text-amber-400 bg-amber-950/30 hover:bg-amber-900/40 border border-amber-900/50 transition-colors whitespace-nowrap">New Request</Link>
-              <Link to="/my-leave-requests" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">My Requests</Link>
-              <Link to="/requests-to-validate" className="px-3 py-1.5 rounded-lg text-sm font-semibold text-stone-300 hover:text-stone-50 hover:bg-zinc-800/50 transition-colors whitespace-nowrap">To Validate</Link>
-            </div>
-          </div>
+          <div className="h-8 w-[1px] bg-white/10 mx-2"></div>
 
-          <div className="flex-shrink-0 flex items-center border-l border-zinc-700/50 pl-4 sm:pl-6 ml-auto gap-4">
-            {user && (
-              <div className="hidden lg:flex flex-col items-end justify-center">
-                <span className="text-sm font-bold text-stone-200 leading-tight">{user.fullName}</span>
-                <span className="text-[10px] font-bold text-amber-500 uppercase tracking-widest">{user.role}</span>
-              </div>
-            )}
-            <button 
-              onClick={handleLogout} 
-              className="px-4 py-1.5 bg-red-950/40 hover:bg-red-900/60 border border-red-800/50 text-red-300 hover:text-red-100 text-xs sm:text-sm font-bold rounded-lg transition-all"
+          <div className="flex items-center gap-3">
+            <button className="p-2 rounded-full hover:bg-white/5 transition-colors text-stone-300 hover:text-white">
+              <User size={20} />
+            </button>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 transition-all duration-300 flex items-center gap-2 text-sm font-medium border border-white/5 hover:border-red-500/30"
             >
-              Logout
+              <LogOut size={16} />
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
       </div>
-      <style dangerouslySetInnerHTML={{__html: `
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}} />
-    </nav>
+    </header>
   );
 }
 

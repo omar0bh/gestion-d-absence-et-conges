@@ -1,49 +1,81 @@
 import { Link } from "react-router-dom";
 import StatusBadge from "./StatusBadge";
+import { Calendar, User, Briefcase, Clock, FileText, ChevronRight, Check, X } from "lucide-react";
 
 function RequestCard({ request, showActions = false, onApprove, onReject }) {
   return (
-    <div className="bg-white rounded-[14px] p-5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] mb-5 text-gray-900 flex flex-col h-full">
-      <div className="flex justify-between gap-4 items-start mb-4">
-        <div>
-          <h3 className="text-lg font-bold text-gray-900 mb-[6px]">{request.leaveType?.name || "-"}</h3>
-          <p className="text-sm font-medium text-gray-500">
-            {request.startDate} → {request.endDate}
-          </p>
+    <div className="glass-card p-6 flex flex-col h-full group hover:shadow-amber-500/5 transition-all duration-500">
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex flex-col gap-1.5">
+          <h3 className="text-lg font-extrabold text-white group-hover:text-amber-400 transition-colors duration-300">
+            {request.leaveType?.name || "Leave Request"}
+          </h3>
+          <div className="flex items-center gap-2 text-stone-400 text-[11px] font-bold uppercase tracking-wider bg-white/5 px-2.5 py-1 rounded-lg border border-white/5 w-fit">
+            <Calendar size={12} className="text-amber-500/70" />
+            <span>{request.startDate} — {request.endDate}</span>
+          </div>
         </div>
         <StatusBadge status={request.status} />
       </div>
 
-      <div className="flex flex-col gap-2 flex-grow text-gray-700 text-sm mb-4">
-        <p>
-          <strong>Employee:</strong> {request.employee?.user?.fullName || "-"}
-        </p>
-        <p>
-          <strong>Days:</strong> {request.numberOfDays}
-        </p>
-        <p>
-          <strong>Reason:</strong> {request.reason || "-"}
-        </p>
+      <div className="flex-grow space-y-3 mb-8">
+        {[
+          { icon: User, label: "Employee", value: request.employee?.user?.fullName },
+          { icon: Briefcase, label: "Department", value: request.employee?.department?.name },
+          { icon: Clock, label: "Duration", value: `${request.numberOfDays} Days`, isHighlighted: true },
+        ].map((item, idx) => (
+          <div key={idx} className="flex justify-between items-center text-sm border-b border-white/5 pb-2 last:border-0">
+            <div className="flex items-center gap-2 text-stone-500">
+              <item.icon size={14} />
+              <span className="font-medium text-xs uppercase tracking-tight">{item.label}</span>
+            </div>
+            <span className={`font-bold truncate max-w-[150px] ${item.isHighlighted ? 'text-amber-400' : 'text-stone-200'}`}>
+              {item.value || "-"}
+            </span>
+          </div>
+        ))}
+        
+        <div className="pt-3 px-4 py-3 bg-white/[0.03] rounded-xl border border-white/5">
+          <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] text-stone-500 mb-2">
+            <FileText size={12} />
+            <span>Reason</span>
+          </div>
+          <p className="text-stone-400 italic text-xs leading-relaxed line-clamp-2">
+             {request.reason ? `"${request.reason}"` : "No reason provided."}
+          </p>
+        </div>
       </div>
 
-      <div className="flex flex-wrap gap-[10px] mt-4">
-        <Link to={`/leave-request-details/${request.id}`} className="inline-block border-none py-[10px] px-[14px] rounded-lg cursor-pointer text-white bg-gray-600 hover:bg-gray-700 text-sm font-medium text-center flex-1">
-          Details
+      <div className="flex flex-col gap-3 mt-auto">
+        <Link 
+          to={`/leave-request-details/${request.id}`} 
+          className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-stone-300 hover:text-white text-xs font-bold uppercase tracking-widest transition-all group/btn"
+        >
+          View Full Details
+          <ChevronRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
         </Link>
 
         {showActions && (
-          <>
-            <button className="inline-block border-none py-[10px] px-[14px] rounded-lg cursor-pointer text-white bg-green-600 hover:bg-green-700 text-sm font-medium flex-1" onClick={() => onApprove(request.id)}>
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-widest transition-all active:scale-[0.98]"
+              onClick={() => onApprove(request.id)}
+            >
+              <Check size={16} />
               Approve
             </button>
-            <button className="inline-block border-none py-[10px] px-[14px] rounded-lg cursor-pointer text-white bg-red-600 hover:bg-red-700 text-sm font-medium flex-1" onClick={() => onReject(request.id)}>
+            <button 
+              className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 text-xs font-bold uppercase tracking-widest transition-all active:scale-[0.98]"
+              onClick={() => onReject(request.id)}
+            >
+              <X size={16} />
               Reject
             </button>
-          </>
+          </div>
         )}
       </div>
     </div>
   );
 }
 
-export default RequestCard;
+export default RequestCard;

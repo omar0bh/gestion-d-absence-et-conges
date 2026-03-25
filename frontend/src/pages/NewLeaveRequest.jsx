@@ -66,73 +66,104 @@ function NewLeaveRequest() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col gap-8 pb-12">
       <PageHeader
         title="New Leave Request"
-        subtitle="Submit a new leave or absence request"
+        subtitle="Submit a new request for leave or absence"
       />
 
-      <div className="bg-white rounded-[14px] p-[20px] shadow-[0_8px_20px_rgba(0,0,0,0.06)] mb-[20px] text-gray-900">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-[18px]">
+      <div className="bg-zinc-950/40 backdrop-blur-xl border border-zinc-700/50 rounded-2xl shadow-lg p-6 max-w-4xl mx-auto w-full">
+        <h2 className="text-xl font-bold text-stone-100 mb-6 drop-shadow-sm flex items-center gap-2">
+          <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+          </svg>
+          Request Details
+        </h2>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="flex flex-col gap-2">
-            <label className="text-gray-700 font-medium text-sm">Leave Type</label>
-            <select
-              name="leaveTypeId"
-              value={formData.leaveTypeId}
-              onChange={handleChange}
-              className="w-full px-[14px] py-[12px] border border-gray-300 rounded-[10px] outline-none focus:ring-2 focus:ring-green-500 bg-white"
-            >
-              <option value="">Select leave type</option>
-              {leaveTypes.map((type) => (
-                <option key={type.id} value={type.id}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
+            <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">Leave Type</label>
+            <div className="relative">
+              <select
+                name="leaveTypeId"
+                value={formData.leaveTypeId}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-600/50 rounded-xl focus:outline-none focus:border-amber-700/80 focus:ring-1 focus:ring-amber-700/50 text-stone-100 transition-all shadow-inner appearance-none"
+              >
+                <option value="" className="bg-zinc-900 text-stone-400">Select leave type</option>
+                {leaveTypes.map((type) => (
+                  <option key={type.id} value={type.id} className="bg-zinc-900 text-stone-100">
+                    {type.name}
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-stone-500">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+                </svg>
+              </div>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-[16px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div className="flex flex-col gap-2">
-              <label className="text-gray-700 font-medium text-sm">Start Date</label>
+              <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">Start Date</label>
               <input
                 type="date"
                 name="startDate"
                 value={formData.startDate}
                 onChange={handleChange}
-                className="w-full px-[14px] py-[12px] border border-gray-300 rounded-[10px] outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                required
+                className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-600/50 rounded-xl focus:outline-none focus:border-amber-700/80 focus:ring-1 focus:ring-amber-700/50 text-stone-100 transition-all shadow-inner [color-scheme:dark]"
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <label className="text-gray-700 font-medium text-sm">End Date</label>
+              <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">End Date</label>
               <input
                 type="date"
                 name="endDate"
                 value={formData.endDate}
                 onChange={handleChange}
-                className="w-full px-[14px] py-[12px] border border-gray-300 rounded-[10px] outline-none focus:ring-2 focus:ring-green-500 bg-white"
+                required
+                className="w-full px-4 py-3 bg-zinc-900/50 border border-zinc-600/50 rounded-xl focus:outline-none focus:border-amber-700/80 focus:ring-1 focus:ring-amber-700/50 text-stone-100 transition-all shadow-inner [color-scheme:dark]"
               />
             </div>
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-gray-700 font-medium text-sm">Reason</label>
+            <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">Reason / Description</label>
             <textarea
               name="reason"
               rows="4"
               value={formData.reason}
               onChange={handleChange}
-              placeholder="Write the reason for your request"
-              className="resize-y w-full px-[14px] py-[12px] border border-gray-300 rounded-[10px] outline-none focus:ring-2 focus:ring-green-500 bg-white"
+              placeholder="Provide a reason for your request..."
+              required
+              className="resize-none w-full px-4 py-3 bg-zinc-900/50 border border-zinc-600/50 rounded-xl focus:outline-none focus:border-amber-700/80 focus:ring-1 focus:ring-amber-700/50 text-stone-100 placeholder-stone-500 transition-all shadow-inner"
             />
           </div>
 
-          {message && <p className="text-green-600 text-sm font-medium">{message}</p>}
-          {errorMessage && <p className="text-red-600 text-sm font-medium">{errorMessage}</p>}
+          {message && (
+            <div className="bg-green-950/40 border border-green-800/50 text-green-300 px-4 py-3 rounded-xl text-sm font-medium text-center">
+              {message}
+            </div>
+          )}
+          {errorMessage && (
+            <div className="bg-red-950/40 border border-red-800/50 text-red-300 px-4 py-3 rounded-xl text-sm font-medium text-center">
+              {errorMessage}
+            </div>
+          )}
 
-          <button type="submit" className="inline-block border-none py-[10px] px-[14px] rounded-lg cursor-pointer text-white bg-green-600 hover:bg-green-700 font-semibold mt-2">
-            Submit Request
-          </button>
+          <div className="flex justify-end pt-2">
+            <button 
+              type="submit" 
+              className="w-full sm:w-auto py-3.5 px-10 rounded-xl shadow-lg text-sm font-extrabold text-stone-50 bg-[#4a3b32] hover:bg-[#3d312a] border border-[#5c493d]/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-amber-700/50 transition-all"
+            >
+              Submit Leave Request
+            </button>
+          </div>
         </form>
       </div>
     </div>

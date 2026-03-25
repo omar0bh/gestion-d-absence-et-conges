@@ -14,6 +14,15 @@ export const AuthProvider = ({ children }) => {
   );
   const [loading, setLoading] = useState(false);
 
+  const clearSession = () => {
+    setToken("");
+    setUser(null);
+    setEmployeeId("");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("employeeId");
+  };
+
   const fetchEmployeeId = async (userId) => {
     try {
       const response = await api.get(`/employees/user/${userId}`);
@@ -29,6 +38,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
+      clearSession();
+
       const response = await api.post("/auth/login", { email, password });
       const data = response.data;
 
@@ -49,10 +60,13 @@ export const AuthProvider = ({ children }) => {
 
       return { success: true };
     } catch (error) {
+      clearSession();
+
       return {
         success: false,
         message:
           error.response?.data?.message ||
+          (typeof error.response?.data === "string" ? error.response.data : "") ||
           "Login failed. Please check your credentials.",
       };
     } finally {
@@ -61,12 +75,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setToken("");
-    setUser(null);
-    setEmployeeId("");
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("employeeId");
+    clearSession();
   };
 
   useEffect(() => {
@@ -81,7 +90,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ token, user, employeeId, loading, login, logout }}
+      value={{ token, user, employeeId, loading, login, logout, clearSession }}
     >
       {children}
     </AuthContext.Provider>

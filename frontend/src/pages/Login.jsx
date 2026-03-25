@@ -36,20 +36,20 @@ function Login() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 relative">
-      
+
       {/* Fixed Logo Top Left - High Quality, No Animation */}
       <div className="absolute top-6 left-6 z-50">
-        <img 
-          src={logo} 
-          alt="Logo" 
-          className="w-[180px] h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]" 
+        <img
+          src={logo}
+          alt="Logo"
+          className="w-[180px] h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
         />
       </div>
 
       <div className="w-full max-w-md relative z-10">
         {/* Main Glass Form Container - Dark Brown/Grey Transparent */}
         <div className="px-10 py-12 bg-zinc-950/40 backdrop-blur-xl border border-zinc-700/50 shadow-2xl rounded-3xl">
-          
+
           <div className="text-center mb-8 flex flex-col items-center">
             <h1 className="text-3xl font-bold text-stone-100 drop-shadow-md mb-2">Login Portal</h1>
             <p className="text-sm font-medium text-stone-300">
@@ -92,8 +92,8 @@ function Login() {
               </div>
             )}
 
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="mt-2 w-full py-3.5 px-4 rounded-xl shadow-lg text-sm font-bold text-stone-50 bg-[#4a3b32]/90 hover:bg-[#3d312a] border border-[#5c493d]/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-[#4a3b32] transition-colors"
             >

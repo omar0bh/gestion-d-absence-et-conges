@@ -3,11 +3,19 @@ package Laa.Urbaine.backend.service.impl;
 import Laa.Urbaine.backend.dto.leaveapproval.LeaveApprovalRequest;
 import Laa.Urbaine.backend.dto.leaverequest.LeaveDecisionRequest;
 import Laa.Urbaine.backend.dto.leaverequest.LeaveRequestCreateRequest;
-import Laa.Urbaine.backend.entity.*;
+import Laa.Urbaine.backend.entity.Employee;
+import Laa.Urbaine.backend.entity.LeaveBalance;
+import Laa.Urbaine.backend.entity.LeaveRequest;
+import Laa.Urbaine.backend.entity.LeaveType;
+import Laa.Urbaine.backend.entity.User;
 import Laa.Urbaine.backend.enums.ApprovalDecision;
 import Laa.Urbaine.backend.enums.LeaveRequestStatus;
 import Laa.Urbaine.backend.enums.ValidationLevel;
-import Laa.Urbaine.backend.repository.*;
+import Laa.Urbaine.backend.repository.EmployeeRepository;
+import Laa.Urbaine.backend.repository.LeaveBalanceRepository;
+import Laa.Urbaine.backend.repository.LeaveRequestRepository;
+import Laa.Urbaine.backend.repository.LeaveTypeRepository;
+import Laa.Urbaine.backend.repository.UserRepository;
 import Laa.Urbaine.backend.service.leaverequest.LeaveRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,7 +50,11 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         int numberOfDays = (int) ChronoUnit.DAYS.between(request.getStartDate(), request.getEndDate()) + 1;
 
         LeaveBalance leaveBalance = leaveBalanceRepository
-                .findByEmployeeIdAndLeaveTypeIdAndYear(employee.getId(), leaveType.getId(), request.getStartDate().getYear())
+                .findByEmployeeIdAndLeaveTypeIdAndYear(
+                        employee.getId(),
+                        leaveType.getId(),
+                        request.getStartDate().getYear()
+                )
                 .orElseThrow(() -> new RuntimeException("Leave balance not found for this employee and year"));
 
         if (leaveBalance.getRemainingDays() < numberOfDays) {
@@ -62,6 +74,12 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
                 .currentStep(1)
                 .createdAt(LocalDateTime.now())
                 .build();
+
+        // Directeur + congé exceptionnel => approved مباشرة
+        if (initialStatus == LeaveRequestStatus.APPROVED) {
+            leaveBalance.setRemainingDays(leaveBalance.getRemainingDays() - numberOfDays);
+            leaveBalanceRepository.save(leaveBalance);
+        }
 
         return leaveRequestRepository.save(leaveRequest);
     }
@@ -90,7 +108,17 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         User approver = userRepository.findById(request.getApproverUserId())
                 .orElseThrow(() -> new RuntimeException("Approver not found"));
 
-        ValidationLevel currentLevel = getCurrentValidationLevel(leaveRequest.getStatus());
+        LeaveRequestStatus currentStatus = leaveRequest.getStatus();
+
+        if (currentStatus == LeaveRequestStatus.APPROVED || currentStatus == LeaveRequestStatus.REJECTED) {
+            throw new RuntimeException("Request already finalized");
+        }
+
+        if (!roleMatchesStatus(approver.getRole().name(), currentStatus)) {
+            throw new RuntimeException("This user is not allowed to approve at this stage");
+        }
+
+        ValidationLevel currentLevel = getCurrentValidationLevel(currentStatus);
 
         leaveApprovalService.createApproval(
                 LeaveApprovalRequest.builder()
@@ -104,9 +132,8 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         );
 
         LeaveRequestStatus nextStatus = determineNextStatusAfterApproval(
-                leaveRequest.getEmployee(),
                 leaveRequest.getLeaveType(),
-                leaveRequest.getStatus()
+                currentStatus
         );
 
         if (nextStatus == LeaveRequestStatus.APPROVED) {
@@ -138,7 +165,17 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         User approver = userRepository.findById(request.getApproverUserId())
                 .orElseThrow(() -> new RuntimeException("Approver not found"));
 
-        ValidationLevel currentLevel = getCurrentValidationLevel(leaveRequest.getStatus());
+        LeaveRequestStatus currentStatus = leaveRequest.getStatus();
+
+        if (currentStatus == LeaveRequestStatus.APPROVED || currentStatus == LeaveRequestStatus.REJECTED) {
+            throw new RuntimeException("Request already finalized");
+        }
+
+        if (!roleMatchesStatus(approver.getRole().name(), currentStatus)) {
+            throw new RuntimeException("This user is not allowed to reject at this stage");
+        }
+
+        ValidationLevel currentLevel = getCurrentValidationLevel(currentStatus);
 
         leaveApprovalService.createApproval(
                 LeaveApprovalRequest.builder()
@@ -152,68 +189,74 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
         );
 
         leaveRequest.setStatus(LeaveRequestStatus.REJECTED);
+
         return leaveRequestRepository.save(leaveRequest);
     }
 
     private LeaveRequestStatus determineInitialStatus(Employee employee, LeaveType leaveType) {
         String role = employee.getUser().getRole().name();
 
-        if ("EMPLOYEE".equals(role)) {
-            if (employee.getService() != null) return LeaveRequestStatus.PENDING_SERVICE;
-            if (employee.getDivision() != null) return LeaveRequestStatus.PENDING_DIVISION;
-            if (employee.getDepartment() != null) return LeaveRequestStatus.PENDING_DEPARTMENT;
+        // DIRECTOR
+        if ("DIRECTOR".equals(role)) {
+            if (isExceptional(leaveType)) {
+                return LeaveRequestStatus.APPROVED;
+            }
             return LeaveRequestStatus.PENDING_HR;
         }
 
-        if ("SERVICE_MANAGER".equals(role)) {
-            if (employee.getDivision() != null) return LeaveRequestStatus.PENDING_DIVISION;
-            if (employee.getDepartment() != null) return LeaveRequestStatus.PENDING_DEPARTMENT;
-            return LeaveRequestStatus.PENDING_HR;
-        }
-
-        if ("DIVISION_MANAGER".equals(role)) {
-            if (leaveType.isRequiresDirectorApproval()) return LeaveRequestStatus.PENDING_DIRECTOR;
-            if (employee.getDepartment() != null) return LeaveRequestStatus.PENDING_DEPARTMENT;
-            return LeaveRequestStatus.PENDING_HR;
-        }
-
-        if ("DEPARTMENT_MANAGER".equals(role) || "DIRECTOR".equals(role)) {
-            if (leaveType.isRequiresDirectorApproval()) return LeaveRequestStatus.PENDING_DIRECTOR;
-            return LeaveRequestStatus.PENDING_HR;
-        }
-
+        // HR
         if ("HR".equals(role)) {
-            if (leaveType.isRequiresDirectorApproval()) return LeaveRequestStatus.PENDING_DIRECTOR;
+            if (isExceptional(leaveType)) {
+                return LeaveRequestStatus.PENDING_DIRECTOR;
+            }
             return LeaveRequestStatus.APPROVED;
+        }
+
+        // باقي الناس: direct manager
+        if (employee.getService() != null) {
+            return LeaveRequestStatus.PENDING_SERVICE;
+        }
+        if (employee.getDivision() != null) {
+            return LeaveRequestStatus.PENDING_DIVISION;
+        }
+        if (employee.getDepartment() != null) {
+            return LeaveRequestStatus.PENDING_DEPARTMENT;
         }
 
         return LeaveRequestStatus.PENDING_HR;
     }
 
-    private LeaveRequestStatus determineNextStatusAfterApproval(Employee employee, LeaveType leaveType, LeaveRequestStatus currentStatus) {
-        return switch (currentStatus) {
-            case PENDING_SERVICE -> employee.getDivision() != null
-                    ? LeaveRequestStatus.PENDING_DIVISION
-                    : employee.getDepartment() != null
-                    ? LeaveRequestStatus.PENDING_DEPARTMENT
-                    : LeaveRequestStatus.PENDING_HR;
+    private LeaveRequestStatus determineNextStatusAfterApproval(LeaveType leaveType, LeaveRequestStatus currentStatus) {
+        // Autorisation d'absence => direct manager فقط
+        if (isShortAbsence(leaveType)) {
+            return switch (currentStatus) {
+                case PENDING_SERVICE, PENDING_DIVISION, PENDING_DEPARTMENT -> LeaveRequestStatus.APPROVED;
+                case PENDING_HR -> LeaveRequestStatus.APPROVED;
+                default -> throw new RuntimeException("Invalid short absence workflow state");
+            };
+        }
 
-            case PENDING_DIVISION -> employee.getDepartment() != null
-                    ? LeaveRequestStatus.PENDING_DEPARTMENT
-                    : LeaveRequestStatus.PENDING_HR;
+        // Congé annuel + Congé maladie => direct manager -> HR -> APPROVED
+        if (isStandardLeave(leaveType)) {
+            return switch (currentStatus) {
+                case PENDING_SERVICE, PENDING_DIVISION, PENDING_DEPARTMENT -> LeaveRequestStatus.PENDING_HR;
+                case PENDING_HR -> LeaveRequestStatus.APPROVED;
+                default -> throw new RuntimeException("Invalid standard leave workflow state");
+            };
+        }
 
-            case PENDING_DEPARTMENT -> leaveType.isRequiresDirectorApproval()
-                    ? LeaveRequestStatus.PENDING_DIRECTOR
-                    : LeaveRequestStatus.PENDING_HR;
+        // Congé exceptionnel => direct manager -> department -> HR -> director -> approved
+        if (isExceptional(leaveType)) {
+            return switch (currentStatus) {
+                case PENDING_SERVICE, PENDING_DIVISION -> LeaveRequestStatus.PENDING_DEPARTMENT;
+                case PENDING_DEPARTMENT -> LeaveRequestStatus.PENDING_HR;
+                case PENDING_HR -> LeaveRequestStatus.PENDING_DIRECTOR;
+                case PENDING_DIRECTOR -> LeaveRequestStatus.APPROVED;
+                default -> throw new RuntimeException("Invalid exceptional leave workflow state");
+            };
+        }
 
-            case PENDING_HR -> leaveType.isRequiresDirectorApproval()
-                    ? LeaveRequestStatus.PENDING_DIRECTOR
-                    : LeaveRequestStatus.APPROVED;
-
-            case PENDING_DIRECTOR -> LeaveRequestStatus.APPROVED;
-
-            default -> LeaveRequestStatus.APPROVED;
-        };
+        throw new RuntimeException("Unknown leave workflow");
     }
 
     private ValidationLevel getCurrentValidationLevel(LeaveRequestStatus status) {
@@ -225,5 +268,29 @@ public class LeaveRequestServiceImpl implements LeaveRequestService {
             case PENDING_DIRECTOR -> ValidationLevel.DIRECTOR;
             default -> ValidationLevel.HR;
         };
+    }
+
+    private boolean roleMatchesStatus(String role, LeaveRequestStatus status) {
+        return switch (status) {
+            case PENDING_SERVICE -> "SERVICE_MANAGER".equals(role);
+            case PENDING_DIVISION -> "DIVISION_MANAGER".equals(role);
+            case PENDING_DEPARTMENT -> "DEPARTMENT_MANAGER".equals(role);
+            case PENDING_HR -> "HR".equals(role);
+            case PENDING_DIRECTOR -> "DIRECTOR".equals(role);
+            default -> false;
+        };
+    }
+
+    private boolean isShortAbsence(LeaveType leaveType) {
+        return leaveType.getName() != null
+                && leaveType.getName().equalsIgnoreCase("Autorisation d'absence");
+    }
+
+    private boolean isExceptional(LeaveType leaveType) {
+        return leaveType.isRequiresDirectorApproval();
+    }
+
+    private boolean isStandardLeave(LeaveType leaveType) {
+        return !isShortAbsence(leaveType) && !isExceptional(leaveType);
     }
 }

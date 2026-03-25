@@ -1,5 +1,15 @@
--- chefdep@test.com / 123456 / DEPARTMENT_MANAGER
--- chefdiv@test.com / 123456 / DIVISION_MANAGER
--- chefservice@test.com / 123456 / SERVICE_MANAGER
--- employee1@test.com / 123456 / EMPLOYEE
--- rh@test.com / 123456 / HR
+--1  = el.khalfi.moustapha@aush.local      / DIRECTOR
+--2  = younesse.bouhmad@aush.local         / DEPARTMENT_MANAGER
+--3  = touhaj.moussef@aush.local           / DEPARTMENT_MANAGER
+--4  = boudabed.hicham@aush.local          / DEPARTMENT_MANAGER
+--5  = touhaj.oum@aush.local               / DIVISION_MANAGER
+--6  = taiba.kaijo@aush.local              / DIVISION_MANAGER
+--7  = rachid.bouhmad@aush.local           / SERVICE_MANAGER
+--8  = fatima.zahra@aush.local             / SERVICE_MANAGER
+--9  = karim.lakhdar@aush.local            / SERVICE_MANAGER
+--10 = rh.admin@aush.local                 / HR
+--11 = admin.system@aush.local             / SYSTEM_ADMIN
+--12 = agent1@aush.local                   / EMPLOYEE
+--13 = agent2@aush.local                   / EMPLOYEE
+--14 = secretariat@aush.local              / EMPLOYEE
+--15 = technicien@aush.local               / EMPLOYEE

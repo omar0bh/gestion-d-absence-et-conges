@@ -4,6 +4,7 @@ import PageHeader from "../components/PageHeader";
 import Loading from "../components/Loading";
 import RequestCard from "../components/RequestCard";
 import { useAuth } from "../context/AuthContext";
+import { FileQuestion } from "lucide-react";
 
 function MyLeaveRequests() {
   const { employeeId } = useAuth();
@@ -19,9 +20,9 @@ function MyLeaveRequests() {
 
       try {
         const response = await api.get(`/leave-requests/employee/${employeeId}`);
-        setRequests(response.data);
+        setRequests(response.data || []);
       } catch (error) {
-        console.error("Error loading my requests:", error);
+        console.error("Error loading my leave requests:", error);
       } finally {
         setLoading(false);
       }
@@ -31,18 +32,30 @@ function MyLeaveRequests() {
   }, [employeeId]);
 
   return (
-    <div>
+    <div className="flex flex-col gap-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
         title="My Leave Requests"
-        subtitle="Track all your submitted leave requests"
+        subtitle="Track your submitted leave and absence requests"
       />
 
       {loading ? (
-        <Loading />
+        <div className="flex justify-center p-20">
+          <Loading />
+        </div>
       ) : requests.length === 0 ? (
-        <p className="bg-white rounded-[14px] p-5 shadow-[0_8px_20px_rgba(0,0,0,0.06)] mb-5 text-gray-500 text-center">No leave requests found.</p>
+        <div className="glass-card p-16 flex flex-col items-center justify-center text-center gap-6">
+          <div className="w-20 h-20 bg-stone-500/10 rounded-full flex items-center justify-center border border-white/5 text-stone-500">
+            <FileQuestion size={40} />
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-2xl font-bold text-white tracking-tight">No Requests Found</h3>
+            <p className="text-stone-400 max-w-sm mx-auto text-sm leading-relaxed">
+              You haven't submitted any leave requests yet. Start by creating a new request from the navigation menu.
+            </p>
+          </div>
+        </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[18px]">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {requests.map((request) => (
             <RequestCard key={request.id} request={request} />
           ))}
@@ -52,4 +65,4 @@ function MyLeaveRequests() {
   );
 }
 
-export default MyLeaveRequests;
+export default MyLeaveRequests;
