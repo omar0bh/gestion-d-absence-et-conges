@@ -26,10 +26,7 @@ function Navbar() {
               className="relative h-10 w-auto object-contain drop-shadow-md brightness-110"
             />
           </div>
-          <div className="h-6 w-[1px] bg-white/10 mx-4 hidden sm:block"></div>
-          <span className="text-lg font-bold tracking-tight text-white hidden sm:block">
-            Portal <span className="text-amber-400 font-medium">Congés</span>
-          </span>
+
         </Link>
 
         <div className="flex items-center gap-6">

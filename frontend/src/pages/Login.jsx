@@ -37,12 +37,12 @@ function Login() {
   return (
     <div className="min-h-screen flex flex-col justify-center items-center p-6 relative">
 
-      {/* Fixed Logo Top Left - High Quality, No Animation */}
-      <div className="absolute top-6 left-6 z-50">
+      {/* Fixed Logo Top Left */}
+      <div className="absolute top-6 left-6 md:top-8 md:left-8 z-50">
         <img
           src={logo}
           alt="Logo"
-          className="w-[180px] h-auto object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.6)]"
+          className="h-14 w-auto object-contain drop-shadow-md"
         />
       </div>
 
