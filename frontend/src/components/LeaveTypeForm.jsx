@@ -36,7 +36,7 @@ function LeaveTypeForm({ onLeaveTypeCreated }) {
         requiresDirectorApproval: form.requiresDirectorApproval,
       });
 
-      setMessage("Leave type created successfully.");
+      setMessage("Type de congé créé avec succès.");
 
       setForm({
         name: "",
@@ -53,38 +53,38 @@ function LeaveTypeForm({ onLeaveTypeCreated }) {
       setErrorMessage(
         error.response?.data?.message ||
           (typeof error.response?.data === "string" ? error.response.data : "") ||
-          "Error creating leave type."
+          "Erreur lors de la création du type de congé."
       );
     }
   };
 
   return (
     <div className="bg-zinc-950/40 backdrop-blur-xl border border-zinc-700/50 rounded-2xl shadow-lg p-6 mb-8">
-      <h2 className="text-xl font-bold text-stone-100 mb-6 drop-shadow-sm">Create Leave Type</h2>
+      <h2 className="text-xl font-bold text-stone-100 mb-6 drop-shadow-sm">Créer un type de congé</h2>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">Name</label>
+            <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">Nom</label>
             <input
               type="text"
               name="name"
               value={form.name}
               onChange={handleChange}
-              placeholder="Enter leave type name"
+              placeholder="Entrez le nom du type de congé"
               required
               className="w-full px-4 py-2.5 bg-zinc-900/50 border border-zinc-600/50 rounded-xl focus:outline-none focus:border-amber-700/80 focus:ring-1 focus:ring-amber-700/50 text-stone-100 placeholder-stone-500 transition-all shadow-inner"
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">Max Days</label>
+            <label className="text-xs font-semibold uppercase tracking-wider text-stone-300 ml-1">Jours Max</label>
             <input
               type="number"
               name="maxDays"
               value={form.maxDays}
               onChange={handleChange}
-              placeholder="Enter max days"
+              placeholder="Entrez le nombre max de jours"
               required
               min="1"
               className="w-full px-4 py-2.5 bg-zinc-900/50 border border-zinc-600/50 rounded-xl focus:outline-none focus:border-amber-700/80 focus:ring-1 focus:ring-amber-700/50 text-stone-100 placeholder-stone-500 transition-all shadow-inner"
@@ -99,7 +99,7 @@ function LeaveTypeForm({ onLeaveTypeCreated }) {
             rows="3"
             value={form.description}
             onChange={handleChange}
-            placeholder="Enter description"
+            placeholder="Entrez une description"
             className="w-full px-4 py-2.5 bg-zinc-900/50 border border-zinc-600/50 rounded-xl focus:outline-none focus:border-amber-700/80 focus:ring-1 focus:ring-amber-700/50 text-stone-100 placeholder-stone-500 transition-all shadow-inner resize-none"
           />
         </div>
@@ -113,7 +113,7 @@ function LeaveTypeForm({ onLeaveTypeCreated }) {
               onChange={handleChange}
               className="w-5 h-5 rounded-md border-zinc-600 bg-zinc-900 text-amber-600 focus:ring-amber-700 focus:ring-offset-zinc-900 accent-amber-600 transition-all"
             />
-            <span className="text-sm font-medium text-stone-300 group-hover:text-stone-100 transition-colors">Requires Proof</span>
+            <span className="text-sm font-medium text-stone-300 group-hover:text-stone-100 transition-colors">Justificatif Requis</span>
           </label>
 
           <label className="flex items-center gap-3 cursor-pointer group">
@@ -124,7 +124,7 @@ function LeaveTypeForm({ onLeaveTypeCreated }) {
               onChange={handleChange}
               className="w-5 h-5 rounded-md border-zinc-600 bg-zinc-900 text-amber-600 focus:ring-amber-700 focus:ring-offset-zinc-900 accent-amber-600 transition-all"
             />
-            <span className="text-sm font-medium text-stone-300 group-hover:text-stone-100 transition-colors">Requires Director Approval</span>
+            <span className="text-sm font-medium text-stone-300 group-hover:text-stone-100 transition-colors">Approbation Directeur Requise</span>
           </label>
         </div>
 
@@ -144,7 +144,7 @@ function LeaveTypeForm({ onLeaveTypeCreated }) {
             type="submit"
             className="w-full md:w-auto py-3 px-8 rounded-xl shadow-lg text-sm font-bold text-stone-50 bg-[#4a3b32]/90 hover:bg-[#3d312a] border border-[#5c493d]/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-[#4a3b32] transition-colors"
           >
-            Create Leave Type
+            Créer le type de congé
           </button>
         </div>
       </form>

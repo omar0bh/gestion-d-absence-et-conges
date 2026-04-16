@@ -34,8 +34,8 @@ function MyLeaveRequests() {
   return (
     <div className="flex flex-col gap-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
-        title="My Leave Requests"
-        subtitle="Track your submitted leave and absence requests"
+        title="Mes demandes de congé"
+        subtitle="Suivre vos demandes de congé et d'absence soumises"
       />
 
       {loading ? (
@@ -48,9 +48,9 @@ function MyLeaveRequests() {
             <FileQuestion size={40} />
           </div>
           <div className="space-y-2">
-            <h3 className="text-2xl font-bold text-white tracking-tight">No Requests Found</h3>
+            <h3 className="text-2xl font-bold text-white tracking-tight">Aucune demande trouvée</h3>
             <p className="text-stone-400 max-w-sm mx-auto text-sm leading-relaxed">
-              You haven't submitted any leave requests yet. Start by creating a new request from the navigation menu.
+              Vous n'avez pas encore soumis de demande de congé. Commencez par en créer une nouvelle depuis le menu de navigation.
             </p>
           </div>
         </div>

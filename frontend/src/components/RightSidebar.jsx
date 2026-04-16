@@ -41,26 +41,26 @@ function RightSidebar() {
   ].includes(role);
 
   const navItems = [
-    { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard, show: isOrgUser || isSystemAdmin },
-    { label: "Departments", path: "/departments", icon: Building2, show: isOrgUser },
+    { label: "Tableau de bord", path: "/dashboard", icon: LayoutDashboard, show: isOrgUser || isSystemAdmin },
+    { label: "Départements", path: "/departments", icon: Building2, show: isOrgUser },
     { label: "Divisions", path: "/divisions", icon: Layers, show: isOrgUser },
     { label: "Services", path: "/services", icon: Settings2, show: isOrgUser },
-    { label: "Employees", path: "/employees", icon: Users, show: isOrgUser },
-    { label: "Leave Types", path: "/leave-types", icon: FileText, show: isOrgUser },
-    { label: "Balances", path: "/leave-balances", icon: Wallet, show: isOrgUser },
-    { label: "New Request", path: "/new-leave-request", icon: PlusCircle, show: isOrgUser },
-    { label: "My Requests", path: "/my-leave-requests", icon: Clock, show: isOrgUser },
-    { label: "To Validate", path: "/requests-to-validate", icon: CheckSquare, show: isValidator },
+    { label: "Employés", path: "/employees", icon: Users, show: isOrgUser },
+    { label: "Types de congé", path: "/leave-types", icon: FileText, show: isOrgUser },
+    { label: "Soldes", path: "/leave-balances", icon: Wallet, show: isOrgUser },
+    { label: "Nouvelle demande", path: "/new-leave-request", icon: PlusCircle, show: isOrgUser },
+    { label: "Mes demandes", path: "/my-leave-requests", icon: Clock, show: isOrgUser },
+    { label: "À valider", path: "/requests-to-validate", icon: CheckSquare, show: isValidator },
   ];
 
   const adminItems = [
-    { label: "Users Admin", path: "/users-management", icon: ShieldCheck, show: isSystemAdmin },
-    { label: "Employees Admin", path: "/employees-management", icon: Users, show: isSystemAdmin },
-    { label: "Leave Types Admin", path: "/leave-types-management", icon: FileText, show: isSystemAdmin },
-    { label: "Balances Admin", path: "/balances-management", icon: Wallet, show: isSystemAdmin },
-    { label: "Depts Management", path: "/departments-management", icon: Building2, show: isSystemAdmin },
-    { label: "Divisions Admin", path: "/divisions-management", icon: Layers, show: isSystemAdmin },
-    { label: "Services Admin", path: "/services-management", icon: Settings2, show: isSystemAdmin },
+    { label: "Gestion Utilisateurs", path: "/users-management", icon: ShieldCheck, show: isSystemAdmin },
+    { label: "Gestion Employés", path: "/employees-management", icon: Users, show: isSystemAdmin },
+    { label: "Gestion Types Congé", path: "/leave-types-management", icon: FileText, show: isSystemAdmin },
+    { label: "Gestion Soldes", path: "/balances-management", icon: Wallet, show: isSystemAdmin },
+    { label: "Gestion Dépts", path: "/departments-management", icon: Building2, show: isSystemAdmin },
+    { label: "Gestion Divisions", path: "/divisions-management", icon: Layers, show: isSystemAdmin },
+    { label: "Gestion Services", path: "/services-management", icon: Settings2, show: isSystemAdmin },
   ];
 
   return (
@@ -107,15 +107,7 @@ function RightSidebar() {
         </div>
       )}
 
-      <div className="mt-auto p-4 glass-card rounded-xl border-amber-500/20 bg-amber-500/5">
-        <div className="flex items-center gap-3 mb-2 text-amber-400">
-          <Briefcase size={16} />
-          <span className="text-xs font-bold uppercase tracking-wider">Help Center</span>
-        </div>
-        <p className="text-[11px] text-stone-400 leading-relaxed">
-          Need help managing your leaves or have a technical issue? Contact support.
-        </p>
-      </div>
+
     </aside>
   );
 }

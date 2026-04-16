@@ -35,47 +35,47 @@ function LeaveRequestDetails() {
   if (!request) {
     return (
       <div className="flex flex-col gap-8 pb-12">
-        <PageHeader title="Leave Request Details" subtitle="Request details" />
+        <PageHeader title="Détails de la demande" subtitle="Détails de la demande" />
         <div className="bg-zinc-950/40 backdrop-blur-xl border border-zinc-700/50 rounded-2xl shadow-lg p-12 text-center text-stone-400 italic">
-          Request not found.
+          Demande non trouvée.
         </div>
       </div>
     );
   }
 
   const approvalColumns = [
-    { key: "levelOrder", label: "Order" },
-    { key: "levelName", label: "Level" },
-    { key: "approver", label: "Approver", render: (row) => row.approver?.fullName || "-" },
-    { key: "decision", label: "Decision", render: (row) => (
+    { key: "levelOrder", label: "Ordre" },
+    { key: "levelName", label: "Niveau" },
+    { key: "approver", label: "Approbateur", render: (row) => row.approver?.fullName || "-" },
+    { key: "decision", label: "Décision", render: (row) => (
       <span className={`font-bold ${row.decision === 'APPROVED' ? 'text-green-500' : row.decision === 'REJECTED' ? 'text-red-500' : 'text-amber-500'}`}>
         {row.decision}
       </span>
     )},
-    { key: "comment", label: "Comment", render: (row) => <span className="text-stone-400 italic">"{row.comment || "-"}"</span> },
+    { key: "comment", label: "Commentaire", render: (row) => <span className="text-stone-400 italic">"{row.comment || "-"}"</span> },
     { key: "decidedAt", label: "Date", render: (row) => row.decidedAt ? new Date(row.decidedAt).toLocaleDateString() : "-" }
   ];
 
   return (
     <div className="flex flex-col gap-8 pb-12">
       <PageHeader
-        title="Leave Request Details"
-        subtitle="Detailed view of the request and its validation history"
+        title="Détails de la demande"
+        subtitle="Vue détaillée de la demande et de son historique de validation"
       />
 
       <div className="bg-zinc-950/40 backdrop-blur-xl border border-zinc-700/50 rounded-2xl shadow-lg p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
           <div className="space-y-4 text-stone-300">
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-stone-500 font-medium">Employee</span>
+              <span className="text-stone-500 font-medium">Employé</span>
               <span className="text-stone-100 font-semibold">{request.employee?.user?.fullName || "-"}</span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-stone-500 font-medium">Role</span>
+              <span className="text-stone-500 font-medium">Rôle</span>
               <span className="text-stone-100">{request.employee?.user?.role || "-"}</span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-stone-500 font-medium">Leave Type</span>
+              <span className="text-stone-500 font-medium">Type de congé</span>
               <span className="bg-[#4a3b32]/50 text-amber-200 px-2 py-0.5 rounded border border-[#5c493d]/50 text-sm font-medium">
                 {request.leaveType?.name || "-"}
               </span>
@@ -88,19 +88,19 @@ function LeaveRequestDetails() {
               <span className="text-stone-100 font-semibold">{request.startDate} → {request.endDate}</span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-stone-500 font-medium">Days</span>
+              <span className="text-stone-500 font-medium">Jours</span>
               <span className="text-amber-500 font-bold">{request.numberOfDays || "-"}</span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-stone-500 font-medium">Status</span>
+              <span className="text-stone-500 font-medium">Statut</span>
               <StatusBadge status={request.status} />
             </div>
           </div>
         </div>
 
         <div className="mt-8 pt-6 border-t border-zinc-800/50">
-          <h4 className="text-xs font-semibold uppercase tracking-wider text-stone-500 mb-2">Reason for Request</h4>
-          <p className="text-stone-200 italic leading-relaxed">"{request.reason || "No reason provided."}"</p>
+          <h4 className="text-xs font-semibold uppercase tracking-wider text-stone-500 mb-2">Motif de la demande</h4>
+          <p className="text-stone-200 italic leading-relaxed">"{request.reason || "Aucun motif fourni."}"</p>
         </div>
       </div>
 
@@ -109,12 +109,12 @@ function LeaveRequestDetails() {
            <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Validation History
+          Historique de validation
         </h3>
 
         {approvals.length === 0 ? (
           <div className="text-center py-12 text-stone-500 italic">
-            No approvals recorded yet.
+            Aucune approbation enregistrée pour le moment.
           </div>
         ) : (
           <DataTable columns={approvalColumns} data={approvals} />

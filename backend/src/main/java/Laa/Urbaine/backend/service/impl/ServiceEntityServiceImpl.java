@@ -25,6 +25,12 @@ public class ServiceEntityServiceImpl implements ServiceEntityService {
     public ServiceEntity createService(ServiceEntityRequest request) {
         Division division = divisionRepository.findById(request.getDivisionId())
                 .orElseThrow(() -> new RuntimeException("Division not found"));
+                if (serviceEntityRepository.existsByNameIgnoreCaseAndDivisionId(
+                request.getName(),
+                 request.getDivisionId())) {
+                throw new RuntimeException("Service name already exists in this division");
+            }
+
 
         User manager = null;
         if (request.getManagerUserId() != null) {

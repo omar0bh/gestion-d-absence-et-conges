@@ -33,10 +33,10 @@ function ServicesManagement() {
     { key: "division", label: "Division", render: (row) => row.division?.name || "-" },
     { 
       key: "manager", 
-      label: "Manager", 
+      label: "Responsable", 
       render: (row) => (
         <div className="flex flex-col">
-          <span className="font-medium text-stone-200">{row.manager?.fullName || "Not Assigned"}</span>
+          <span className="font-medium text-stone-200">{row.manager?.fullName || "Non Assigné"}</span>
           <span className="text-[10px] text-stone-500 uppercase tracking-widest">{row.manager?.role?.replace("_", " ") || "-"}</span>
         </div>
       ) 
@@ -52,7 +52,7 @@ function ServicesManagement() {
     <div className="flex flex-col gap-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
         title="Services"
-        subtitle="Operational management for leaf-level services"
+        subtitle="Gestion opérationnelle des services"
       />
 
       <ServiceForm onServiceCreated={fetchServices} />
@@ -60,7 +60,7 @@ function ServicesManagement() {
       <div className="glass-card p-8">
         <h3 className="text-xl font-bold text-white mb-8 tracking-tight flex items-center gap-3">
           <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
-          Registered Services
+          Services Enregistrés
         </h3>
 
         {loading ? (

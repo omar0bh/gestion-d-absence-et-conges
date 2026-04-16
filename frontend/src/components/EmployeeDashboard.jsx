@@ -42,7 +42,7 @@ function EmployeeDashboard() {
           </div>
           <div className="flex justify-between items-start relative z-10">
             <div>
-              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Pending Requests</p>
+              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Demandes en Attente</p>
               <h3 className="text-3xl font-bold text-white">{pendingCount}</h3>
             </div>
             <div className="w-10 h-10 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 border border-amber-500/20">
@@ -57,7 +57,7 @@ function EmployeeDashboard() {
           </div>
           <div className="flex justify-between items-start relative z-10">
             <div>
-              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Approved Requests</p>
+              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Demandes Approuvées</p>
               <h3 className="text-3xl font-bold text-white">{approvedCount}</h3>
             </div>
             <div className="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 border border-emerald-500/20">
@@ -72,7 +72,7 @@ function EmployeeDashboard() {
           </div>
           <div className="flex justify-between items-start relative z-10">
             <div>
-              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Rejected Requests</p>
+              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Demandes Rejetées</p>
               <h3 className="text-3xl font-bold text-white">{rejectedCount}</h3>
             </div>
             <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 border border-red-500/20">
@@ -87,7 +87,7 @@ function EmployeeDashboard() {
           </div>
           <div className="flex justify-between items-start relative z-10">
             <div>
-              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Active Leave Balances</p>
+              <p className="text-[10px] font-black text-stone-500 uppercase tracking-widest mb-1">Soldes de Congé Actifs</p>
               <h3 className="text-3xl font-bold text-white">{balances.length}</h3>
             </div>
             <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400 border border-blue-500/20">
@@ -98,18 +98,18 @@ function EmployeeDashboard() {
       </div>
 
       <div className="glass-card p-6">
-        <h3 className="text-lg font-bold text-white mb-6">My Leave Balances</h3>
+        <h3 className="text-lg font-bold text-white mb-6">Mes Soldes de Congé</h3>
 
         {balances.length === 0 ? (
-          <p className="text-stone-400">No balances found.</p>
+          <p className="text-stone-400">Aucun solde trouvé.</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-stone-900/40 border-b border-white/5">
                   <th className="px-6 py-4 text-[10px] font-black text-stone-500 uppercase tracking-widest">Type</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-stone-500 uppercase tracking-widest">Year</th>
-                  <th className="px-6 py-4 text-[10px] font-black text-stone-500 uppercase tracking-widest">Remaining Days</th>
+                  <th className="px-6 py-4 text-[10px] font-black text-stone-500 uppercase tracking-widest">Année</th>
+                  <th className="px-6 py-4 text-[10px] font-black text-stone-500 uppercase tracking-widest">Jours Restants</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">

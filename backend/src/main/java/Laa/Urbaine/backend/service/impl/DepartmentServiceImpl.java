@@ -20,7 +20,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Department createDepartment(DepartmentRequest request) {
-        if (departmentRepository.existsByName(request.getName())) {
+        if (departmentRepository.existsByNameIgnoreCase(request.getName())) {
             throw new RuntimeException("Department name already exists");
         }
 

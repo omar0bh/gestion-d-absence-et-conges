@@ -14,7 +14,7 @@ function AdminDashboard() {
               <Settings size={22} />
             </div>
             <p className="text-xl font-bold text-white leading-none mb-2">Admin</p>
-            <p className="text-stone-500 text-xs font-medium">System configuration and management</p>
+            <p className="text-stone-500 text-xs font-medium">Configuration et gestion du système</p>
           </div>
         </div>
 
@@ -26,8 +26,8 @@ function AdminDashboard() {
             <div className="w-11 h-11 rounded-2xl bg-cyan-500/20 flex items-center justify-center text-cyan-400 mb-5 border border-cyan-500/20 shadow-inner">
               <Users size={22} />
             </div>
-            <p className="text-xl font-bold text-white leading-none mb-2">Users</p>
-            <p className="text-stone-500 text-xs font-medium">Create and manage accounts</p>
+            <p className="text-xl font-bold text-white leading-none mb-2">Utilisateurs</p>
+            <p className="text-stone-500 text-xs font-medium">Créer et gérer les comptes</p>
           </div>
         </div>
 
@@ -39,8 +39,8 @@ function AdminDashboard() {
             <div className="w-11 h-11 rounded-2xl bg-amber-500/20 flex items-center justify-center text-amber-400 mb-5 border border-amber-500/20 shadow-inner">
               <Briefcase size={22} />
             </div>
-            <p className="text-xl font-bold text-white leading-none mb-2">Employees</p>
-            <p className="text-stone-500 text-xs font-medium">Link users to employee profiles</p>
+            <p className="text-xl font-bold text-white leading-none mb-2">Employés</p>
+            <p className="text-stone-500 text-xs font-medium">Lier les utilisateurs aux profils d'employés</p>
           </div>
         </div>
 
@@ -52,42 +52,42 @@ function AdminDashboard() {
             <div className="w-11 h-11 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 mb-5 border border-emerald-500/20 shadow-inner">
               <CalendarDays size={22} />
             </div>
-            <p className="text-xl font-bold text-white leading-none mb-2">Balances</p>
-            <p className="text-stone-500 text-xs font-medium">Manage leave balances and types</p>
+            <p className="text-xl font-bold text-white leading-none mb-2">Soldes</p>
+            <p className="text-stone-500 text-xs font-medium">Gérer les soldes et les types de congé</p>
           </div>
         </div>
       </div>
 
       <div className="glass-card p-6">
-        <h3 className="text-lg font-bold text-white mb-6">Quick Access</h3>
+        <h3 className="text-lg font-bold text-white mb-6">Accès Rapide</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           <Link to="/users-management" className="glass-card p-4 hover:bg-white/5 transition-colors group flex items-start gap-4 border border-white/5 hover:border-white/20">
             <div className="w-8 h-8 rounded-lg bg-stone-500/20 flex items-center justify-center text-stone-400 border border-stone-500/20 group-hover:scale-110 transition-transform"><ExternalLink size={16} /></div>
-            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Users Management</div>
+            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Gestion Utilisateurs</div>
           </Link>
           <Link to="/employees-management" className="glass-card p-4 hover:bg-white/5 transition-colors group flex items-start gap-4 border border-white/5 hover:border-white/20">
             <div className="w-8 h-8 rounded-lg bg-stone-500/20 flex items-center justify-center text-stone-400 border border-stone-500/20 group-hover:scale-110 transition-transform"><ExternalLink size={16} /></div>
-            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Employees Management</div>
+            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Gestion Employés</div>
           </Link>
           <Link to="/leave-types-management" className="glass-card p-4 hover:bg-white/5 transition-colors group flex items-start gap-4 border border-white/5 hover:border-white/20">
             <div className="w-8 h-8 rounded-lg bg-stone-500/20 flex items-center justify-center text-stone-400 border border-stone-500/20 group-hover:scale-110 transition-transform"><ExternalLink size={16} /></div>
-            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Leave Types Management</div>
+            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Gestion Types Congé</div>
           </Link>
           <Link to="/balances-management" className="glass-card p-4 hover:bg-white/5 transition-colors group flex items-start gap-4 border border-white/5 hover:border-white/20">
             <div className="w-8 h-8 rounded-lg bg-stone-500/20 flex items-center justify-center text-stone-400 border border-stone-500/20 group-hover:scale-110 transition-transform"><ExternalLink size={16} /></div>
-            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Balances Management</div>
+            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Gestion des Soldes</div>
           </Link>
           <Link to="/departments-management" className="glass-card p-4 hover:bg-white/5 transition-colors group flex items-start gap-4 border border-white/5 hover:border-white/20">
             <div className="w-8 h-8 rounded-lg bg-stone-500/20 flex items-center justify-center text-stone-400 border border-stone-500/20 group-hover:scale-110 transition-transform"><ExternalLink size={16} /></div>
-            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Departments Management</div>
+            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Gestion Départements</div>
           </Link>
           <Link to="/divisions-management" className="glass-card p-4 hover:bg-white/5 transition-colors group flex items-start gap-4 border border-white/5 hover:border-white/20">
             <div className="w-8 h-8 rounded-lg bg-stone-500/20 flex items-center justify-center text-stone-400 border border-stone-500/20 group-hover:scale-110 transition-transform"><ExternalLink size={16} /></div>
-            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Divisions Management</div>
+            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Gestion Divisions</div>
           </Link>
           <Link to="/services-management" className="glass-card p-4 hover:bg-white/5 transition-colors group flex items-start gap-4 border border-white/5 hover:border-white/20">
             <div className="w-8 h-8 rounded-lg bg-stone-500/20 flex items-center justify-center text-stone-400 border border-stone-500/20 group-hover:scale-110 transition-transform"><ExternalLink size={16} /></div>
-            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Services Management</div>
+            <div className="text-sm font-bold text-stone-200 group-hover:text-white transition-colors mt-1">Gestion Services</div>
           </Link>
         </div>
       </div>

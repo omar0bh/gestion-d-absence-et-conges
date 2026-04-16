@@ -2,7 +2,7 @@ function DataTable({ columns, data }) {
   if (!data || data.length === 0) {
     return (
       <div className="glass-card p-12 text-center">
-        <p className="text-stone-400 font-medium text-lg italic">No data found in this section.</p>
+        <p className="text-stone-400 font-medium text-lg italic">Aucune donnée trouvée dans cette section.</p>
       </div>
     );
   }

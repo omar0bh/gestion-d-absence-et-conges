@@ -3,6 +3,7 @@ import api from "../api/axios";
 import PageHeader from "../components/PageHeader";
 import Loading from "../components/Loading";
 import RequestCard from "../components/RequestCard";
+import RejectModal from "../components/RejectModal";
 import { useAuth } from "../context/AuthContext";
 import { AlertCircle, CheckCircle2, ShieldAlert } from "lucide-react";
 
@@ -10,6 +11,7 @@ function RequestsToValidate() {
   const { user } = useAuth();
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [rejectModal, setRejectModal] = useState({ isOpen: false, requestId: null });
 
   const loadRequests = async () => {
     try {
@@ -60,12 +62,15 @@ function RequestsToValidate() {
     }
   };
 
-  const handleReject = async (requestId) => {
-    const comment = window.prompt("Enter rejection reason:");
-    if (comment === null) return;
+  const handleReject = (requestId) => {
+    setRejectModal({ isOpen: true, requestId });
+  };
+
+  const confirmReject = async (comment) => {
+    if (!rejectModal.requestId) return;
 
     try {
-      await api.post(`/leave-requests/${requestId}/reject`, {
+      await api.post(`/leave-requests/${rejectModal.requestId}/reject`, {
         approverUserId: user.userId,
         comment,
       });
@@ -77,6 +82,8 @@ function RequestsToValidate() {
           (typeof error.response?.data === "string" ? error.response.data : "") ||
           "Reject failed."
       );
+    } finally {
+      setRejectModal({ isOpen: false, requestId: null });
     }
   };
 
@@ -91,8 +98,8 @@ function RequestsToValidate() {
   return (
     <div className="flex flex-col gap-8 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
-        title="Requests To Validate"
-        subtitle="Leave requests pending your validation"
+        title="Demandes à valider"
+        subtitle="Demandes de congé en attente de votre validation"
       />
 
       {!canValidate ? (
@@ -101,9 +108,9 @@ function RequestsToValidate() {
             <ShieldAlert size={40} />
           </div>
           <div className="space-y-2">
-            <h3 className="text-2xl font-bold text-white tracking-tight text-shadow-sm">Access Restricted</h3>
+            <h3 className="text-2xl font-bold text-white tracking-tight text-shadow-sm">Accès restreint</h3>
             <p className="text-stone-400 max-w-sm mx-auto text-sm leading-relaxed">
-              Your current role ({user?.role?.replace("_", " ")}) does not have the necessary permissions to validate leave requests.
+              Votre rôle actuel ({user?.role?.replace("_", " ")}) ne possède pas les permissions nécessaires pour valider les demandes de congé.
             </p>
           </div>
         </div>
@@ -117,9 +124,9 @@ function RequestsToValidate() {
             <CheckCircle2 size={40} />
           </div>
           <div className="space-y-2">
-            <h3 className="text-2xl font-bold text-white tracking-tight">All Caught Up!</h3>
+            <h3 className="text-2xl font-bold text-white tracking-tight">Tout est à jour !</h3>
             <p className="text-stone-400 max-w-sm mx-auto text-sm leading-relaxed">
-              Great job! There are no pending leave requests awaiting your validation. Enjoy your focused work time.
+              Félicitations ! Il n'y a aucune demande de congé en attente de votre validation. Profitez de votre temps de travail concentré.
             </p>
           </div>
         </div>
@@ -136,6 +143,14 @@ function RequestsToValidate() {
           ))}
         </div>
       )}
+
+      <RejectModal
+        isOpen={rejectModal.isOpen}
+        title="Rejet de la demande"
+        message="Veuillez fournir un motif pour justifier le refus de cette demande de congé. Ce motif sera visible par l'employé."
+        onConfirm={confirmReject}
+        onCancel={() => setRejectModal({ isOpen: false, requestId: null })}
+      />
     </div>
   );
 }

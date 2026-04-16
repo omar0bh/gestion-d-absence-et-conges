@@ -30,13 +30,13 @@ function DivisionsManagement() {
       label: "Division", 
       render: (row) => <span className="font-bold text-white">{row.name}</span> 
     },
-    { key: "department", label: "Parent Dept.", render: (row) => row.department?.name || "-" },
+    { key: "department", label: "Dépt. Parent", render: (row) => row.department?.name || "-" },
     { 
       key: "manager", 
-      label: "Manager", 
+      label: "Responsable", 
       render: (row) => (
         <div className="flex flex-col">
-          <span className="font-medium text-stone-200">{row.manager?.fullName || "Not Assigned"}</span>
+          <span className="font-medium text-stone-200">{row.manager?.fullName || "Non Assigné"}</span>
           <span className="text-[10px] text-stone-500 uppercase tracking-widest">{row.manager?.role?.replace("_", " ") || "-"}</span>
         </div>
       ) 
@@ -52,7 +52,7 @@ function DivisionsManagement() {
     <div className="flex flex-col gap-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
         title="Divisions"
-        subtitle="Hierarchy management for organizational divisions"
+        subtitle="Gestion de la hiérarchie pour les divisions"
       />
 
       <DivisionForm onDivisionCreated={fetchDivisions} />
@@ -60,7 +60,7 @@ function DivisionsManagement() {
       <div className="glass-card p-8">
         <h3 className="text-xl font-bold text-white mb-8 tracking-tight flex items-center gap-3">
           <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
-          Registered Divisions
+          Divisions Enregistrées
         </h3>
 
         {loading ? (

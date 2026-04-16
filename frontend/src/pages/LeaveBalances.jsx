@@ -34,18 +34,18 @@ function LeaveBalances() {
     { key: "id", label: "ID" },
     {
       key: "leaveType",
-      label: "Leave Type",
+      label: "Type de congé",
       render: (row) => row.leaveType?.name || "-",
     },
-    { key: "year", label: "Year" },
-    { key: "remainingDays", label: "Remaining Days" },
+    { key: "year", label: "Année" },
+    { key: "remainingDays", label: "Jours Restants" },
   ];
 
   return (
     <div>
       <PageHeader
-        title="My Leave Balances"
-        subtitle="Remaining leave days for your account"
+        title="Mes Soldes de Congé"
+        subtitle="Jours de congé restants pour votre compte"
       />
       {loading ? <Loading /> : <DataTable columns={columns} data={balances} />}
     </div>

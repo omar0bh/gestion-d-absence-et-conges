@@ -13,7 +13,11 @@ function StatusBadge({ status }) {
 
   return (
     <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider border ${config.bg} ${config.text} ${config.border}`}>
-      {status?.replace("_", " ")}
+      {status === 'APPROVED' ? 'APPROUVÉ' : 
+       status === 'REJECTED' ? 'REJETÉ' : 
+       status === 'CANCELLED' ? 'ANNULÉ' : 
+       status?.includes('PENDING') ? 'EN ATTENTE' : 
+       status?.replace("_", " ")}
     </span>
   );
 }

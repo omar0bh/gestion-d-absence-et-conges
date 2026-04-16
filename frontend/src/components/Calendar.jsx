@@ -1,13 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  Filter, 
-  Clock, 
-  CheckCircle2, 
-  XCircle, 
+import CustomSelect from "./CustomSelect";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  Clock,
+  CheckCircle2,
+  XCircle,
   AlertTriangle,
   Calendar as CalendarIcon,
   User,
@@ -88,8 +89,8 @@ function Calendar() {
         statusFilter === "ALL"
           ? true
           : statusFilter === "PENDING"
-          ? req.status?.includes("PENDING")
-          : req.status === statusFilter;
+            ? req.status?.includes("PENDING")
+            : req.status === statusFilter;
 
       const matchesType =
         leaveTypeFilter === "ALL"
@@ -306,37 +307,35 @@ function Calendar() {
           </div>
 
           <div className="flex flex-wrap items-center gap-4">
-            <div className="flex items-center gap-2 bg-stone-900/40 p-1 rounded-xl border border-white/5">
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800/50 rounded-lg border border-white/5">
-                <Filter size={14} className="text-stone-500" />
-                <select 
-                  value={statusFilter} 
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                  className="bg-transparent text-xs font-bold text-stone-300 outline-none cursor-pointer"
-                >
-                  <option value="ALL">All Status</option>
-                  <option value="PENDING">Pending</option>
-                  <option value="APPROVED">Approved</option>
-                  <option value="REJECTED">Rejected</option>
-                </select>
-              </div>
+            <div className="flex items-center gap-4">
+              <CustomSelect
+                value={statusFilter}
+                onChange={setStatusFilter}
+                icon={Filter}
+                placeholder="Statut"
+                options={[
+                  { value: "ALL", label: "All Status" },
+                  { value: "PENDING", label: "Pending" },
+                  { value: "APPROVED", label: "Approved" },
+                  { value: "REJECTED", label: "Rejected" },
+                ]}
+                className="w-44"
+              />
 
-              <div className="flex items-center gap-1.5 px-3 py-1.5 bg-stone-800/50 rounded-lg border border-white/5">
-                <CalendarIcon size={14} className="text-stone-500" />
-                <select 
-                  value={leaveTypeFilter} 
-                  onChange={(e) => setLeaveTypeFilter(e.target.value)}
-                  className="bg-transparent text-xs font-bold text-stone-300 outline-none cursor-pointer"
-                >
-                  <option value="ALL">All Types</option>
-                  {leaveTypes.map((type) => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
+              <CustomSelect
+                value={leaveTypeFilter}
+                onChange={setLeaveTypeFilter}
+                icon={CalendarIcon}
+                placeholder="Type"
+                options={[
+                  { value: "ALL", label: "All Types" },
+                  ...leaveTypes.map((type) => ({ value: type, label: type })),
+                ]}
+                className="w-44"
+              />
             </div>
 
-            <button 
+            <button
               onClick={resetFilters}
               className="px-4 py-2 text-xs font-bold text-stone-400 hover:text-white transition-colors"
             >
@@ -383,11 +382,10 @@ function Calendar() {
                 <div
                   key={index}
                   onClick={() => day && setSelectedDay(day)}
-                  className={`min-h-[120px] p-2 rounded-xl transition-all duration-200 border relative group ${
-                    day 
-                      ? "bg-stone-800/20 border-white/5 hover:border-amber-500/30 cursor-pointer" 
+                  className={`min-h-[120px] p-2 rounded-xl transition-all duration-200 border relative group ${day
+                      ? "bg-stone-800/20 border-white/5 hover:border-amber-500/30 cursor-pointer"
                       : "bg-transparent border-transparent"
-                  } ${isSelected ? "border-amber-500/50 bg-amber-500/5" : ""} ${isToday ? "ring-1 ring-amber-500 ring-inset" : ""}`}
+                    } ${isSelected ? "border-amber-500/50 bg-amber-500/5" : ""} ${isToday ? "ring-1 ring-amber-500 ring-inset" : ""}`}
                 >
                   {day && (
                     <>
@@ -430,7 +428,7 @@ function Calendar() {
                 Showing absences for {selectedDay} {currentDate.toLocaleString("default", { month: "long" })} {year}
               </p>
             </div>
-            <button 
+            <button
               onClick={() => setSelectedDay(null)}
               className="p-2 hover:bg-white/5 rounded-lg text-stone-500 hover:text-white transition-colors"
             >

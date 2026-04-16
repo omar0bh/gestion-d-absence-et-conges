@@ -25,7 +25,7 @@ function Services() {
 
   const columns = [
     { key: "id", label: "ID" },
-    { key: "name", label: "Service Name" },
+    { key: "name", label: "Nom du Service" },
     {
       key: "division",
       label: "Division",
@@ -33,7 +33,7 @@ function Services() {
     },
     {
       key: "manager",
-      label: "Manager",
+      label: "Responsable",
       render: (row) => row.manager?.fullName || "-",
     },
   ];
@@ -42,11 +42,11 @@ function Services() {
     <div className="flex flex-col gap-8 pb-12">
       <PageHeader
         title="Services"
-        subtitle="List of all services in the organisation"
+        subtitle="Liste de tous les services de l'organisation"
       />
 
       <div className="bg-zinc-950/40 backdrop-blur-xl border border-zinc-700/50 rounded-2xl shadow-lg p-6">
-        <h3 className="text-xl font-bold text-stone-100 mb-6 drop-shadow-sm">Services List</h3>
+        <h3 className="text-xl font-bold text-stone-100 mb-6 drop-shadow-sm">Liste des Services</h3>
 
         {loading ? (
           <div className="flex justify-center p-8">

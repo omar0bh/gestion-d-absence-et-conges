@@ -25,10 +25,10 @@ function Departments() {
 
   const columns = [
     { key: "id", label: "ID" },
-    { key: "name", label: "Department Name" },
+    { key: "name", label: "Nom du Département" },
     {
       key: "manager",
-      label: "Manager",
+      label: "Responsable",
       render: (row) => row.manager?.fullName || "-",
     },
   ];
@@ -36,12 +36,12 @@ function Departments() {
   return (
     <div className="flex flex-col gap-8 pb-12">
       <PageHeader
-        title="Departments"
-        subtitle="List of all departments in the organisation"
+        title="Départements"
+        subtitle="Liste de tous les départements de l'organisation"
       />
 
       <div className="bg-zinc-950/40 backdrop-blur-xl border border-zinc-700/50 rounded-2xl shadow-lg p-6">
-        <h3 className="text-xl font-bold text-stone-100 mb-6 drop-shadow-sm">Departments List</h3>
+        <h3 className="text-xl font-bold text-stone-100 mb-6 drop-shadow-sm">Liste des Départements</h3>
 
         {loading ? (
           <div className="flex justify-center p-8">

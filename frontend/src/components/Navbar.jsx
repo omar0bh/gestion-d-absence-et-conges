@@ -20,9 +20,9 @@ function Navbar() {
         <Link to="/dashboard" className="flex items-center group">
           <div className="relative">
             <div className="absolute -inset-1 bg-amber-500/20 rounded-full blur opacity-0 group-hover:opacity-100 transition duration-500"></div>
-            <img 
-              src={logo} 
-              alt="Logo" 
+            <img
+              src={logo}
+              alt="Logo"
               className="relative h-10 w-auto object-contain drop-shadow-md brightness-110"
             />
           </div>
@@ -48,7 +48,7 @@ function Navbar() {
               className="px-4 py-2 rounded-xl bg-white/5 hover:bg-red-500/20 text-stone-300 hover:text-red-400 transition-all duration-300 flex items-center gap-2 text-sm font-medium border border-white/5 hover:border-red-500/30"
             >
               <LogOut size={16} />
-              <span className="hidden sm:inline">Logout</span>
+              <span className="hidden sm:inline">Déconnexion</span>
             </button>
           </div>
         </div>

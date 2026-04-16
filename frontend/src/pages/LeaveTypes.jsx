@@ -25,26 +25,26 @@ function LeaveTypes() {
 
   const columns = [
     { key: "id", label: "ID" },
-    { key: "name", label: "Name" },
+    { key: "name", label: "Nom" },
     { key: "description", label: "Description" },
-    { key: "maxDays", label: "Max Days" },
+    { key: "maxDays", label: "Jours Max" },
     {
       key: "requiresProof",
-      label: "Requires Proof",
-      render: (row) => (row.requiresProof ? "Yes" : "No"),
+      label: "Justificatif Requis",
+      render: (row) => (row.requiresProof ? "Oui" : "Non"),
     },
     {
       key: "requiresDirectorApproval",
-      label: "Director Approval",
-      render: (row) => (row.requiresDirectorApproval ? "Yes" : "No"),
+      label: "Approbation Directeur",
+      render: (row) => (row.requiresDirectorApproval ? "Oui" : "Non"),
     },
   ];
 
   return (
     <div>
       <PageHeader
-        title="Leave Types"
-        subtitle="List of all leave and absence types"
+        title="Types de congé"
+        subtitle="Liste de tous les types de congé et d'absence"
       />
       {loading ? <Loading /> : <DataTable columns={columns} data={leaveTypes} />}
     </div>

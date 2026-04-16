@@ -27,15 +27,15 @@ function DepartmentsManagement() {
   const columns = [
     { 
       key: "name", 
-      label: "Department", 
+      label: "Département", 
       render: (row) => <span className="font-bold text-white">{row.name}</span> 
     },
     { 
       key: "manager", 
-      label: "Manager", 
+      label: "Responsable", 
       render: (row) => (
         <div className="flex flex-col">
-          <span className="font-medium text-stone-200">{row.manager?.fullName || "Not Assigned"}</span>
+          <span className="font-medium text-stone-200">{row.manager?.fullName || "Non Assigné"}</span>
           <span className="text-[10px] text-stone-500 uppercase tracking-widest">{row.manager?.role?.replace("_", " ") || "-"}</span>
         </div>
       ) 
@@ -50,8 +50,8 @@ function DepartmentsManagement() {
   return (
     <div className="flex flex-col gap-10 pb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <PageHeader
-        title="Departments"
-        subtitle="Organize and manage structural departments"
+        title="Départements"
+        subtitle="Organiser et gérer les départements structurels"
       />
 
       <DepartmentForm onDepartmentCreated={fetchDepartments} />
@@ -59,7 +59,7 @@ function DepartmentsManagement() {
       <div className="glass-card p-8">
         <h3 className="text-xl font-bold text-white mb-8 tracking-tight flex items-center gap-3">
           <div className="w-1.5 h-6 bg-amber-500 rounded-full"></div>
-          Registered Departments
+          Départements Enregistrés
         </h3>
 
         {loading ? (

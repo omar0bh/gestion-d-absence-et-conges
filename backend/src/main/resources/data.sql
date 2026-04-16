@@ -1,7 +1,7 @@
---1  = el.khalfi.moustapha@aush.local      / DIRECTOR
---2  = younesse.bouhmad@aush.local         / DEPARTMENT_MANAGER
---3  = touhaj.moussef@aush.local           / DEPARTMENT_MANAGER
---4  = boudabed.hicham@aush.local          / DEPARTMENT_MANAGER
+--1  = el.kahlaoui.moustapha@aush.local      / DIRECTOR
+--2  = younes.bouhmad@aush.local         / DEPARTMENT_MANAGER
+--3  = toufiq.youssef@aush.local           / DEPARTMENT_MANAGER
+--4  = hallab.laabadila@aush.local         / DEPARTMENT_MANAGER
 --5  = touhaj.oum@aush.local               / DIVISION_MANAGER
 --6  = taiba.kaijo@aush.local              / DIVISION_MANAGER
 --7  = rachid.bouhmad@aush.local           / SERVICE_MANAGER

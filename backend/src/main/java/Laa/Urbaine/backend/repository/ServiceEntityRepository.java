@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ServiceEntityRepository extends JpaRepository<ServiceEntity, Long> {
     List<ServiceEntity> findByDivisionId(Long divisionId);
+        boolean existsByNameIgnoreCaseAndDivisionId(String name, Long divisionId);
 }

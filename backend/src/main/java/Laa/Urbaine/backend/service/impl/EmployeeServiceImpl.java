@@ -32,42 +32,35 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new RuntimeException("This user is already linked to an employee");
         }
 
-        Department department = null;
-        if (request.getDepartmentId() != null) {
-            department = departmentRepository.findById(request.getDepartmentId())
-                    .orElseThrow(() -> new RuntimeException("Department not found"));
+        return employeeRepository.save(buildEmployee(null, request, user));
+    }
+
+    @Override
+    public Employee updateEmployee(Long id, EmployeeRequest request) {
+        Employee existing = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
+
+        if (employeeRepository.existsByMatriculeAndIdNot(request.getMatricule(), id)) {
+            throw new RuntimeException("Matricule already exists");
         }
 
-        Division division = null;
-        if (request.getDivisionId() != null) {
-            division = divisionRepository.findById(request.getDivisionId())
-                    .orElseThrow(() -> new RuntimeException("Division not found"));
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (employeeRepository.findByUserIdAndIdNot(request.getUserId(), id).isPresent()) {
+            throw new RuntimeException("This user is already linked to another employee");
         }
 
-        ServiceEntity service = null;
-        if (request.getServiceId() != null) {
-            service = serviceEntityRepository.findById(request.getServiceId())
-                    .orElseThrow(() -> new RuntimeException("Service not found"));
-        }
+        Employee updated = buildEmployee(existing, request, user);
+        return employeeRepository.save(updated);
+    }
 
-        User directManager = null;
-        if (request.getDirectManagerId() != null) {
-            directManager = userRepository.findById(request.getDirectManagerId())
-                    .orElseThrow(() -> new RuntimeException("Direct manager not found"));
-        }
+    @Override
+    public void deleteEmployee(Long id) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found"));
 
-        Employee employee = Employee.builder()
-                .matricule(request.getMatricule())
-                .user(user)
-                .department(department)
-                .division(division)
-                .service(service)
-                .directManager(directManager)
-                .positionTitle(request.getPositionTitle())
-                .hireDate(request.getHireDate())
-                .build();
-
-        return employeeRepository.save(employee);
+        employeeRepository.delete(employee);
     }
 
     @Override
@@ -85,5 +78,52 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getEmployeeByUserId(Long userId) {
         return employeeRepository.findByUserId(userId)
                 .orElseThrow(() -> new RuntimeException("Employee not found for this user"));
+    }
+
+    private Employee buildEmployee(Employee existing, EmployeeRequest request, User user) {
+        String role = user.getRole().name();
+        boolean topLevelRole = "DIRECTOR".equals(role) || "SYSTEM_ADMIN".equals(role);
+
+        Department department = null;
+        Division division = null;
+        ServiceEntity service = null;
+        User directManager = null;
+
+        if (!topLevelRole) {
+            if (request.getDepartmentId() == null) {
+                throw new RuntimeException("Department is required for this role");
+            }
+
+            department = departmentRepository.findById(request.getDepartmentId())
+                    .orElseThrow(() -> new RuntimeException("Department not found"));
+
+            if (request.getDivisionId() != null) {
+                division = divisionRepository.findById(request.getDivisionId())
+                        .orElseThrow(() -> new RuntimeException("Division not found"));
+            }
+
+            if (request.getServiceId() != null) {
+                service = serviceEntityRepository.findById(request.getServiceId())
+                        .orElseThrow(() -> new RuntimeException("Service not found"));
+            }
+
+            if (request.getDirectManagerId() != null) {
+                directManager = userRepository.findById(request.getDirectManagerId())
+                        .orElseThrow(() -> new RuntimeException("Direct manager not found"));
+            }
+        }
+
+        Employee employee = existing != null ? existing : new Employee();
+
+        employee.setMatricule(request.getMatricule());
+        employee.setUser(user);
+        employee.setDepartment(department);
+        employee.setDivision(division);
+        employee.setService(service);
+        employee.setDirectManager(directManager);
+        employee.setPositionTitle(request.getPositionTitle());
+        employee.setHireDate(request.getHireDate());
+
+        return employee;
     }
 }

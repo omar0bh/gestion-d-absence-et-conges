@@ -25,6 +25,11 @@ public class DivisionServiceImpl implements DivisionService {
     public Division createDivision(DivisionRequest request) {
         Department department = departmentRepository.findById(request.getDepartmentId())
                 .orElseThrow(() -> new RuntimeException("Department not found"));
+            if (divisionRepository.existsByNameIgnoreCaseAndDepartmentId(
+                request.getName(),
+                 request.getDepartmentId())) {
+                throw new RuntimeException("Division name already exists in this department");
+            }
 
         User manager = null;
         if (request.getManagerUserId() != null) {
